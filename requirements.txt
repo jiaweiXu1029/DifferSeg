@@ -1,0 +1,399 @@
+torch~=2.4.0
+torchaudio
+torchvision
+-f https://download.pytorch.org/whl/cu121
+hydra-core==1.3.2
+tqdm==4.65.2
+imageio
+pysodmetrics
+
+wenjianchuanshu:
+scp -r -P 38816 /home/zqq/桌面/XJW/MDSAM-master/rgbdvsod root@connect.nma1.seetacloud.com:/root/autodl-tmp/data/
+
+scp -r -P 38816 root@connect.nma1.seetacloud.com:/root/autodl-tmp/ckps /home/zqq/result
+
+cp -r /root/autodl-tmp/data/Mirror/VMD/test* /root/autodl-tmp/data/Mirror/
+cp -r /root/autodl-tmp/data/SOD/RGBD/train/mask/* /root/autodl-tmp/data/RGBD/train/mask/
+cp -r /root/autodl-tmp/data/SOD/RGBD/train/depth/* /root/autodl-tmp/data/RGBD/train/depth/
+
+cp -r /root/autodl-tmp/data/COD/RGBD/test/COD10K /root/autodl-tmp/data/RGBD/test/
+cp -r /root/autodl-tmp/data/SOD/RGBD/NJUD /root/autodl-tmp/data/RGBD/test/
+shanchuwenjian
+rm -r /root/autodl-tmp/data/SOD/rgbdvsod/
+
+zhuanyiwenjian
+mv /root/autodl-tmp/data/SOD/RGBD/test/SIP* /root/autodl-tmp/data/SOD/RGBD
+rmdir /root/autodl-tmp/data/VCOD/VCOD
+
+find  /root/autodl-tmp/data/SOD/VSOD/train/depth -type f | wc -l
+gaidongmingzils ls
+mv /root/autodl-tmp/data/rgbdvsod/test/RDVS-TEST/flow /root/autodl-tmp/data/rgbdvsod/test/RDVS-TEST/thermal
+
+chuangjianwenjian
+mkdir /root/autodl-tmp/data/Mirror/
+
+
+find  /root/autodl-tmp/data/SOD/RGB/train -type f | wc -l
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+python train.py \
+    --hiera_path /root/autodl-tmp/sam2_hiera_large.pt \
+    --train_image_path /root/autodl-tmp/data/SOD/RGB/train/image/ \
+    --train_mask_path /root/autodl-tmp/data/SOD/RGB/train/mask/ \
+    --val_datasets_dir /root/autodl-tmp/data/SOD/RGB/test \
+    --save_path /root/autodl-tmp/ckps/SOD/RGB \
+    --epoch 30 \
+    --lr 0.0005 \
+    --batch_size 8
+
+python train_RGBD.py \
+  --hiera_path "/root/autodl-tmp/sam2_hiera_large.pt" \
+  --train_image_path "/root/autodl-tmp/data/SOD/RGBD/train/image/" \
+  --train_mask_path "/root/autodl-tmp/data/SOD/RGBD/train/mask/" \
+  --train_depth_path "/root/autodl-tmp/data/SOD/RGBD/train/depth/" \
+  --val_dir "/root/autodl-tmp/data/SOD/RGBD/test/" \
+  --save_path "/root/autodl-tmp/ckps/SOD/RGBD" \
+  --epoch 30 \
+  --batch_size 8 \
+   --lr 0.0005  \
+   --resume "/root/autodl-tmp/ckps/SOD/RGBD/SAM2-UNet-RGBD-best_mae.pth"
+
+
+python test.py --checkpoint /root/autodl-tmp/ckps/SOD/RGB/SAM2-UNet-best_mae.pth \
+               --hiera_path /root/autodl-tmp/sam2_hiera_large.pt \
+               --datasets_root /root/autodl-tmp/data/SOD/RGB/test \
+               --save_root /root/autodl-tmp/result/SOD/RGB/
+----------------------------------------------------------------------------------------------------------------------
+python train_PolypSegmentation.py \
+    --hiera_path /root/autodl-tmp/sam2_hiera_large.pt \
+    --train_image_path /root/autodl-tmp/data/PolypSegmentation/TrainDataset/image/ \
+    --train_mask_path /root/autodl-tmp/data/PolypSegmentation/TrainDataset/mask/ \
+    --val_datasets_dir /root/autodl-tmp/data/PolypSegmentation/TestDataset  \
+    --save_path /root/autodl-tmp/ckps/PolypSegmentation \
+    --epoch 30 \
+    --lr 0.001 \
+    --batch_size 12
+
+python test.py --checkpoint /root/autodl-tmp/ckps_PolypSegmentation/SAM2-UNet-best_dice.pth \
+               --hiera_path /root/autodl-tmp/sam2_hiera_large.pt \
+               --datasets_root /root/autodl-tmp/data/PolypSegmentation/TestDataset \
+               --save_root /root/autodl-tmp/ckps/PolypSegmentation
+----------------------------------------------------------------------------------------------------------------------------------------------------
+python train.py \
+    --hiera_path /root/autodl-tmp/sam2_hiera_large.pt \
+    --train_image_path /root/autodl-tmp/data/marine_animal/RGB/train/image/ \
+    --train_mask_path /root/autodl-tmp/data/marine_animal/RGB/train/mask/ \
+    --val_datasets_dir /root/autodl-tmp/data/marine_animal/RGB/test \
+    --save_path /root/autodl-tmp/ckps/marine_animal \
+    --epoch 20 \
+    --lr 0.0005 \
+    --batch_size 8
+python test.py --checkpoint /root/autodl-tmp/ckps/marine_animal/SAM2-UNet-best_mae.pth \
+               --hiera_path /root/autodl-tmp/sam2_hiera_large.pt \
+               --datasets_root /root/autodl-tmp/data/marine_animal/RGB/test \
+               --save_root /root/autodl-tmp/result/marine_animal/result
+
+python evall.py --base_dir /root/autodl-tmp/data/marine_animal/test --pred_base /root/autodl-tmp/marine_animalresult
+---------------------------------------------------------------------------------------------------------------------------------------------
+python train.py \
+    --hiera_path /root/autodl-tmp/sam2_hiera_large.pt \
+    --train_image_path /root/autodl-tmp/data/FD/train/image/ \
+    --train_mask_path /root/autodl-tmp/data/FD/train/mask/ \
+    --val_datasets_dir /root/autodl-tmp/data/FD/test \
+    --save_path /root/autodl-tmp/ckps/FD \
+    --epoch 20 \
+    --lr 0.001 \
+    --batch_size 12
+python test.py --checkpoint /root/autodl-tmp/ckps/FD/SAM2-UNet-best_mae.pth \
+               --hiera_path /root/autodl-tmp/sam2_hiera_large.pt \
+               --datasets_root /root/autodl-tmp/data/FD/test \
+               --save_root /root/autodl-tmp/result/FD
+
+python eval_1.py --base_dir /root/autodl-tmp/data/FD/test --pred_base /root/autodl-tmp/result/FD
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+python train.py \
+    --hiera_path /root/autodl-tmp/sam2_hiera_large.pt \
+    --train_image_path /root/autodl-tmp/data/DBD/train/image \
+    --train_mask_path /root/autodl-tmp/data/DBD/train/mask \
+    --val_datasets_dir /root/autodl-tmp/data/DBD/test \
+    --save_path /root/autodl-tmp/ckps/DBD \
+    --epoch 25 \
+    --lr 0.0005 \
+    --batch_size 8
+python test.py --checkpoint /root/autodl-tmp/ckps/DBD/SAM2-UNet-best_mae.pth \
+               --hiera_path /root/autodl-tmp/sam2_hiera_large.pt \
+               --datasets_root /root/autodl-tmp/data/DBD/test \
+               --save_root /root/autodl-tmp/result/DBD/
+
+python eval.py --base_dir /root/autodl-tmp/data/DBD/test --pred_base /root/autodl-tmp/result/DBD/
+
+----------------------------------------------------------------------------------------------------------------------------------------
+python train.py \
+    --hiera_path /root/autodl-tmp/sam2_hiera_large.pt \
+    --train_image_path /root/autodl-tmp/data/SD/train/image \
+    --train_mask_path /root/autodl-tmp/data/SD/train/mask \
+    --val_datasets_dir /root/autodl-tmp/data/SD/test \
+    --save_path /root/autodl-tmp/ckps/SD \
+    --epoch 25 \
+    --lr 0.0005 \
+    --batch_size 8
+python test.py --checkpoint /root/autodl-tmp/ckps/SD/SAM2-UNet-best_mae.pth \
+               --hiera_path /root/autodl-tmp/sam2_hiera_large.pt \
+               --datasets_root /root/autodl-tmp/data/SD/test \
+               --save_root /root/autodl-tmp/result/SD/
+
+python eval.py --base_dir /root/autodl-tmp/data/SD/test --pred_base /root/autodl-tmp/result/SD/
+
+
+------------------------------------------------------------------------------------------------------------------
+python train.py \
+    --hiera_path /root/autodl-tmp/sam2_hiera_large.pt \
+    --train_image_path /root/autodl-tmp/data/Mirror/RGB/train/image/ \
+    --train_mask_path /root/autodl-tmp/data/Mirror/RGB/train/mask/ \
+    --val_datasets_dir /root/autodl-tmp/data/Mirror/RGB/test  \
+    --save_path /root/autodl-tmp/ckps/Mirror/RGB/ \
+    --epoch 25 \
+    --lr 0.0005 \
+    --batch_size 8
+
+
+ ---------------------------------------------------------------------------------------------------
+python test.py --checkpoint /root/autodl-tmp/ckps/Mirror/RGB/SAM2-UNet-best_mae.pth \
+               --hiera_path /root/autodl-tmp/sam2_hiera_large.pt \
+               --datasets_root /root/autodl-tmp/data/Mirror/RGB/test \
+               --save_root /root/autodl-tmp/result/Mirror/RGB/
+
+python eval.py --base_dir /root/autodl-tmp/data/Mirror/RGB/test --pred_base /root/autodl-tmp/result/Mirror/RGB/mirror_detectionresult
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+python train.py \
+    --hiera_path /root/autodl-tmp/sam2_hiera_large.pt \
+    --train_image_path /root/autodl-tmp/data/Mirror/VMD/train/image/ \
+    --train_mask_path /root/autodl-tmp/data/Mirror/VMD/train/mask/ \
+    --val_datasets_dir /root/autodl-tmp/data/Mirror/VMD/test  \
+    --save_path /root/autodl-tmp/ckps/Mirror/VMD/ \
+    --epoch 20 \
+    --lr 0.0005 \
+    --batch_size 8
+python test.py --checkpoint /root/autodl-tmp/ckps/Mirror/VMD/SAM2-UNet-best_mae.pth \
+               --hiera_path /root/autodl-tmp/sam2_hiera_large.pt \
+               --datasets_root /root/autodl-tmp/data/Mirror/VMD/test \
+               --save_root /root/autodl-tmp/result/Mirror/VMD/
+
+python eval100.py --base_dir /root/autodl-tmp/data/Mirror/VMD/test --pred_base /root/autodl-tmp/result/Mirror/VMD/
+------------------------------------------------------------------------------------------------------------------------------------------------
+python train.py \
+    --hiera_path /root/autodl-tmp/sam2_hiera_large.pt \
+    --train_image_path /root/autodl-tmp/data/Transparent/train/image/ \
+    --train_mask_path /root/autodl-tmp/data/Transparent/train/mask/ \
+    --val_datasets_dir /root/autodl-tmp/data/Transparent/test  \
+    --save_path /root/autodl-tmp/ckps/Transparent \
+    --epoch 20 \
+    --lr 0.0005 \
+    --batch_size 8
+python test.py --checkpoint /root/autodl-tmp/ckps/Transparent/SAM2-UNet-best_mae.pth \
+               --hiera_path /root/autodl-tmp/sam2_hiera_large.pt \
+               --datasets_root /root/autodl-tmp/data/Transparent/test \
+               --save_root /root/autodl-tmp/result/Transparent/
+
+python eval100.py --base_dir /root/autodl-tmp/data/Transparent/test --pred_base /root/autodl-tmp/result/Transparent/
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+python train.py \
+    --hiera_path /root/autodl-tmp/sam2_hiera_large.pt \
+    --train_image_path /root/autodl-tmp/data/medica/train/image/ \
+    --train_mask_path /root/autodl-tmp/data/medica/train/mask/ \
+    --val_datasets_dir /root/autodl-tmp/data/medica/test  \
+    --save_path /root/autodl-tmp/ckps/medica \
+    --epoch 40 \
+    --lr 0.001 \
+    --batch_size 12 \
+    --resume "/root/autodl-tmp/ckps/medica/SAM2-UNet-best_mae.pth"
+
+python test.py --checkpoint /root/autodl-tmp/ckps/medica/SAM2-UNet-best_mae.pth  \
+               --hiera_path /root/autodl-tmp/sam2_hiera_large.pt \
+               --datasets_root /root/autodl-tmp/data/medica/test \
+               --save_root /root/autodl-tmp/result/medica/
+
+python eval.py --base_dir /root/autodl-tmp/data/medica/test --pred_base /root/autodl-tmp/result/medica/
+
+
+
+
+python train_PolypSegmentation.py \
+    --hiera_path /root/autodl-tmp/sam2_hiera_large.pt \
+    --train_image_path /root/autodl-tmp/data/medical/unified/COVID19/train/image/ \
+    --train_mask_path /root/autodl-tmp/data/medical/unified/COVID19/train/mask/ \
+    --val_datasets_dir /root/autodl-tmp/data/medical/unified/COVID19/test  \
+    --save_path /root/autodl-tmp/ckps/medical \
+    --epoch 20 \
+    --lr 0.001 \
+    --batch_size 12
+
+python train_PolypSegmentation.py \
+    --hiera_path /root/autodl-tmp/sam2_hiera_large.pt \
+    --train_image_path /root/autodl-tmp/data/medical/unified/breast/train/image/ \
+    --train_mask_path /root/autodl-tmp/data/medical/unified/breast/train/mask/ \
+    --val_datasets_dir /root/autodl-tmp/data/medical/unified/breast/test  \
+    --save_path /root/autodl-tmp/ckps/medical \
+    --epoch 20 \
+    --lr 0.001 \
+    --batch_size 12
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+python test_RGBD.py --checkpoint /root/autodl-tmp/ckps/Mirror/RGBD/SAM2-UNet-RGBD-best_mae.pth \
+                      --data_root /root/autodl-tmp/data/Mirror/RGBD/test \
+                      --save_root /root/autodl-tmp/result/Mirror/RGBD
+
+python train_RGBD.py \
+  --hiera_path "/root/autodl-tmp/sam2_hiera_large.pt" \
+  --train_image_path "/root/autodl-tmp/data/Mirror/RGBD/train/image/" \
+  --train_mask_path "/root/autodl-tmp/data/Mirror/RGBD/train/mask/" \
+  --train_depth_path "/root/autodl-tmp/data/Mirror/RGBD/train/depth/" \
+  --val_dir "/root/autodl-tmp/data/Mirror/RGBD/test/" \
+  --save_path "/root/autodl-tmp/ckps/Mirror/RGBD" \
+  --epoch 30 \
+  --batch_size 8 \
+  --lr 0.0005
+
+python eval.py --base_dir /root/autodl-tmp/data/Mirror/RGBD/test --pred_base /root/autodl-tmp/result/Mirror/RGBD
+
+ -------------------------------------------------------------------------------------------------------------------------------------------
+python test_RGBD.py --checkpoint /root/autodl-tmp/ckps/COD/RGBD/SAM2-UNet-RGBD-best_mae.pth \
+                      --data_root /root/autodl-tmp/data/COD/RGBD/test/ \
+                      --save_root /root/autodl-tmp/result/COD/RGBD
+
+python train_RGBD.py \
+  --hiera_path "/root/autodl-tmp/sam2_hiera_large.pt" \
+  --train_image_path "/root/autodl-tmp/data/COD/RGBD/train/image/" \
+  --train_mask_path "/root/autodl-tmp/data/COD/RGBD/train/mask/" \
+  --train_depth_path "/root/autodl-tmp/data/COD/RGBD/train/depth/" \
+  --val_dir "/root/autodl-tmp/data/COD/RGBD/test/" \
+  --save_path "/root/autodl-tmp/ckps/COD/RGBD" \
+  --epoch 30 \
+  --batch_size 8 \
+   --lr 0.0005
+
+
+python eval.py --base_dir /root/autodl-tmp/data/COD/RGBD/test --pred_base /root/autodl-tmp/result/COD/RGBD
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+python test_RGBD.py --checkpoint /root/autodl-tmp/ckps/SOD/RGBD/SAM2-UNet-RGBD-best_mae.pth \
+                      --data_root /root/autodl-tmp/data/SOD/RGBD/test/ \
+                      --save_root /root/autodl-tmp/result/SOD/RGBD
+
+python train_RGBD.py \
+  --hiera_path "/root/autodl-tmp/sam2_hiera_large.pt" \
+  --train_image_path "/root/autodl-tmp/data/SOD/RGBD/train/image/" \
+  --train_mask_path "/root/autodl-tmp/data/SOD/RGBD/train/mask/" \
+  --train_depth_path "/root/autodl-tmp/data/SOD/RGBD/train/depth/" \
+  --val_dir "/root/autodl-tmp/data/SOD/RGBD/test/" \
+  --save_path "/root/autodl-tmp/ckps/SOD/RGBD" \
+  --epoch 30 \
+  --batch_size 8 \
+   --lr 0.0005
+
+   --resume "/root/autodl-tmp/ckps/SOD/RGBD/SAM2-UNet-RGBD-best_mae.pth"
+
+
+python eval.py --base_dir /root/autodl-tmp/data/SOD/RGBD/test --pred_base /root/autodl-tmp/result/SOD/RGBD
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+python test_RGBT.py --checkpoint /root/autodl-tmp/ckps/SOD/RGBT/SAM2-UNet-RGBT-best_mae.pth \
+                      --data_root /root/autodl-tmp/data/SOD/RGBT/test \
+                      --save_root /root/autodl-tmp/result/SOD/RGBT
+
+
+python train_RGBT.py \
+  --hiera_path "/root/autodl-tmp/sam2_hiera_large.pt" \
+  --train_image_path "/root/autodl-tmp/data/SOD/RGBT/train/image/" \
+  --train_thermal_path "/root/autodl-tmp/data/SOD/RGBT/train/thermal/" \
+  --train_mask_path "/root/autodl-tmp/data/SOD/RGBT/train/mask/" \
+  --val_dir "/root/autodl-tmp/data/SOD/RGBT/test/" \
+  --save_path "/root/autodl-tmp/ckps/SOD/RGBT" \
+  --epoch 30 \
+  --batch_size 8 \
+  --lr 0.0005
+   --resume "/root/autodl-tmp/ckps/SOD/RGBT/SAM2-UNet-RGBT-best_mae.pth"
+
+  -------------------------------------------------------------------------------------------------------------------------------------------------
+python test_VSOD.py --checkpoint /root/autodl-tmp/ckps/SOD/VSOD/SAM2-UNet-VCOD-best_mae.pth \
+                      --data_root /root/autodl-tmp/data/SOD/VSOD/test \
+                      --save_root /root/autodl-tmp/result/SOD/VSOD
+
+
+python train_VSOD.py \
+  --hiera_path /root/autodl-tmp/sam2_hiera_large.pt \
+  --train_path /root/autodl-tmp/data/SOD/VSOD/train \
+  --test_path /root/autodl-tmp/data/SOD/VSOD/test/ \
+  --save_path /root/autodl-tmp/ckps/SOD/VSOD \
+  --epoch 30 \
+  --lr 0.0005 \
+  --batch_size 8
+
+  --resume "/root/autodl-tmp/ckps/SOD/VSOD/SAM2-UNet-VCOD-best_mae.pth"
+
+python eval.py --base_dir /root/autodl-tmp/data/COD/VCOD/test --pred_base /root/autodl-tmp/result/COD/VCOD
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+python test_VSOD.py --checkpoint /root/autodl-tmp/ckps/COD/VCOD/SAM2-UNet-VCOD-best_mae.pth \
+                      --data_root /root/autodl-tmp/data/COD/VCOD/test \
+                      --save_root /root/autodl-tmp/result/COD/VCOD
+python train_VSOD.py \
+  --hiera_path /root/autodl-tmp/sam2_hiera_large.pt \
+  --train_path /root/autodl-tmp/data/COD/VCOD/train \
+  --test_path /root/autodl-tmp/data/COD/VCOD/test/ \
+  --save_path /root/autodl-tmp/ckps/COD/VCOD \
+  --epoch 30 \
+  --lr 0.0005 \
+  --batch_size 8
+
+python eval.py --base_dir /root/autodl-tmp/data/COD/VCOD/test --pred_base /root/autodl-tmp/result/COD/VCOD
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+python test_RGBDT.py --checkpoint /root/autodl-tmp/ckps_rgbdt/SAM2-UNet-RGBDT-best_mae.pth \
+                      --data_root /root/autodl-tmp/data/rgbdvsod/test/ \
+                      --save_root /root/autodl-tmp/RGBDVresult
+
+
+python train_RGBDT.py \
+  --hiera_path "/root/autodl-tmp/sam2_hiera_large.pt" \
+  --train_image_path "/root/autodl-tmp/data/SOD/RGBDT/RGBDT/Train/image/" \
+  --train_mask_path "/root/autodl-tmp/data/SOD/RGBDT/RGBDT/Train/mask/" \
+  --train_depth_path "/root/autodl-tmp/data/SOD/RGBDT/RGBDT/Train/depth/" \
+  --train_thermal_path "/root/autodl-tmp/data/SOD/RGBDT/RGBDT/Train/thermal/" \
+  --val_image_path "/root/autodl-tmp/data/SOD/RGBDT/RGBDT/Test/image/" \
+  --val_mask_path "/root/autodl-tmp/data/SOD/RGBDT/RGBDT/Test/mask/" \
+  --val_depth_path "/root/autodl-tmp/data/SOD/RGBDT/RGBDT/Test/depth/" \
+  --val_thermal_path "/root/autodl-tmp/data/SOD/RGBDT/RGBDT/Test/thermal/" \
+  --save_path "/root/autodl-tmp/ckps_rgbdt" \
+  --epoch 30 \
+  --batch_size 8 \
+  --lr 0.0005
+
+python train_RGBDT.py \
+  --hiera_path "/root/autodl-tmp/sam2_hiera_large.pt" \
+  --train_image_path "/root/autodl-tmp/data/rgbdvsod/rgbdvsod_train/image/" \
+  --train_mask_path "/root/autodl-tmp/data/rgbdvsod/rgbdvsod_train/mask/" \
+  --train_depth_path "/root/autodl-tmp/data/rgbdvsod/rgbdvsod_train/depth/" \
+  --train_thermal_path "/root/autodl-tmp/data/rgbdvsod/rgbdvsod_train/flow/" \
+  --val_image_path "/root/autodl-tmp/data/rgbdvsod/rgbdvsod_test/VIDSOD_TEST/image/" \
+  --val_mask_path "/root/autodl-tmp/data/rgbdvsod/rgbdvsod_test/VIDSOD_TEST/mask/" \
+  --val_depth_path "/root/autodl-tmp/data/rgbdvsod/rgbdvsod_test/VIDSOD_TEST/depth/" \
+  --val_thermal_path "/root/autodl-tmp/data/rgbdvsod/rgbdvsod_test/VIDSOD_TEST/flow/" \
+  --save_path "/root/autodl-tmp/ckps_rgbdt" \
+  --epoch 30 \
+  --batch_size 8 \
+  --lr 0.0005
+
+python train.py \
+    --hiera_path /root/autodl-tmp/sam2_hiera_large.pt \
+    --train_image_path /root/autodl-tmp/data/sperate/8/train/image/ \
+    --train_mask_path /root/autodl-tmp/data/sperate/8/train/mask/gt_task0 \
+    --val_datasets_dir /root/autodl-tmp/data/sperate/8/test \
+    --save_path /root/autodl-tmp/ckps/POLYP/ \
+    --epoch 20 \
+    --lr 0.00005 \
+    --batch_size 8
+
+mv /root/autodl-tmp/data/sperate/1/test/masks /root/autodl-tmp/data/sperate/1/test/mask
