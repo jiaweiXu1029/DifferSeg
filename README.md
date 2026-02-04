@@ -21,3 +21,8 @@ Benefiting from these designs, DifferSeg can be easily generalized to diverse bi
 
 ```bash
 pip install -r requirements.txt
+
+Pretrained Models
+RGB_SOD.pth
+RGB-D_SOD.pth
+......
