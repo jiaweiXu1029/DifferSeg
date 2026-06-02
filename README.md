@@ -6,7 +6,7 @@
 Qiangqiang Zhou, Jiawei Xu, Yong Chen, Dandan Zhu, Yugen Yi, Xiaoqi Zhao
 <p align="center">
   <img src="https://raw.githubusercontent.com/jiaweiXu1029/DifferSeg/main/TCSVT_figure/DifferSeg_01(2).png" width="800"><br>
-  <em>Figure 1. Overall architecture of the proposed TP-Seg framework for unified medical lesion segmentation. Each input image, together with its task embedding, is processed by the task-conditioned routing block (TCRB) for feature extraction, followed by the prototype-guided task decoder (PGTD) for task-aware decoding and final lesion prediction.</em>
+  <em>Figure 1. Overall architecture of the proposed TP-Seg framework for unified medical lesion segmentation. Each input image, together with its 
 </p>
 ## Overview
 In many binary segmentation tasks, most multimodal methods rely on fixed feature concatenation for cross-modal interaction and straightforward decoder designs dominated by low-frequency semantics.
@@ -15,7 +15,18 @@ In this work, we propose a simple yet general multimodal binary segmentation fra
 With the help of the differential perception fusion (DPF) module, DifferSeg employs learnable differential operators to adaptively align multimodal features and enhance their complementarity through residual fusion, effectively mitigating modality mismatch and fusion redundancy.
 In addition, we design a frequency-guided decoder (FGD) that builds cross-frequency interactions and multi-path upsampling to maintain consistency between detailed high-frequency structures and semantic low-frequency representations, ensuring fine-grained boundary recovery and noise suppression.
 Benefiting from these designs, DifferSeg can be easily generalized to diverse binary segmentation tasks, including both natural and medical modalities. Without bells and whistles, it consistently surpasses 67 state-of-the-art methods across 29 public datasets involving 18 downstream tasks, demonstrating superior generalization and segmentation accuracy.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/jiaweiXu1029/DifferSeg/main/TCSVT_figure/CVPR1.2 (1).png" width="800"><br>
+  <em>Figure 1. Overall architecture of the proposed TP-Seg framework for unified medical lesion segmentation. Each input image, together with its 
+</p>
 
+## Visual Comparison
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/jiaweiXu1029/TP-Seg/main/TCSVT_figure/all (1).png" width="800"><br>
+</p>
+
+---
 ## Requirements
 - Python >= 3.8
 - PyTorch >= 1.10
@@ -23,9 +34,26 @@ Benefiting from these designs, DifferSeg can be easily generalized to diverse bi
 
 ```bash
 pip install -r requirements.txt
-## Prediction
-Pretrained Models
-RGB_SOD.pth
-RGB-D_SOD.pth
-......
+---
+
+
+## Prediction Maps
+[link](https://drive.google.com/file/d/1F6sVp6_Vf3J8a93sWq1eEoAWFZoRi_-c/view?usp=drive_link).
+---
+
 ## model.pth
+[link](https://drive.google.com/file/d/1F6sVp6_Vf3J8a93sWq1eEoAWFZoRi_-c/view?usp=drive_link).
+---
+
+## Citing TP-Seg
+
+If you find **DifferSeg** useful in your research or work, please consider citing our paper:
+
+```bibtex
+@inproceedings{xu2026tp,
+  title={TP-Seg: Task-Prototype Framework for Unified Medical Lesion Segmentation},
+  author={Xu, Jiawei and Zhou, Qiangqiang and Zhu, Dandan and Chen, Yong and Yi, Yugen and Zhao, Xiaoqi},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={5452--5462},
+  year={2026}
+}
