@@ -25,16 +25,18 @@ Benefiting from these designs, DifferSeg can be easily generalized to diverse bi
 </p>
 
 ---
+## Dataset
+All datasets are publicly available. Please download them as needed for the task.
 
 ## Prediction Maps
-[link](https://drive.google.com/file/d/1F6sVp6_Vf3J8a93sWq1eEoAWFZoRi_-c/view?usp=drive_link).
+[link]([https://drive.google.com/file/d/1F6sVp6_Vf3J8a93sWq1eEoAWFZoRi_-c/view?usp=drive_link](https://drive.google.com/file/d/1TtJOQhGJlwa7OiQe0Z1ImUXXxJ7HCjKV/view?usp=drive_link)).
 ---
 
 ## model.pth
-[link](https://drive.google.com/file/d/1F6sVp6_Vf3J8a93sWq1eEoAWFZoRi_-c/view?usp=drive_link).
+[link]([https://drive.google.com/file/d/1F6sVp6_Vf3J8a93sWq1eEoAWFZoRi_-c/view?usp=drive_link](https://drive.google.com/file/d/1XRGXab_Z_6ej-purCmQ0pdmKtLi2dodh/view?usp=drive_link)).
 ---
 
-## Citing TP-Seg
+## Citing DifferSeg
 
 If you find **DifferSeg** useful in your research or work, please consider citing our paper:
 
