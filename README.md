@@ -41,10 +41,10 @@ All datasets are publicly available. Please download them as needed for the task
 If you find **DifferSeg** useful in your research or work, please consider citing our paper:
 
 ```bibtex
-@inproceedings{xu2026tp,
-  title={TP-Seg: Task-Prototype Framework for Unified Medical Lesion Segmentation},
-  author={Xu, Jiawei and Zhou, Qiangqiang and Zhu, Dandan and Chen, Yong and Yi, Yugen and Zhao, Xiaoqi},
-  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
-  pages={5452--5462},
-  year={2026}
+@article{zhou2026differseg,
+  title={DifferSeg: Towards Diverse Multimodal Binary Segmentation via Differential Perception and Frequency Guidance},
+  author={Zhou, Qiangqiang and Xu, Jiawei and Chen, Yong and Zhu, Dandan and Yi, Yugen and Zhao, Xiaoqi},
+  journal={IEEE Transactions on Circuits and Systems for Video Technology},
+  year={2026},
+  publisher={IEEE}
 }
